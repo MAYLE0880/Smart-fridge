@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Холодильник открыт</title>
-    <!-- Подключение Bootstrap -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
-        /* Общие стили */
+
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
@@ -62,13 +62,13 @@
             margin-bottom: 15px;
             position: relative;
             transition: transform 0.2s ease-in-out, opacity 0.5s ease-in-out;
-            opacity: 0; /* Продукты изначально скрыты */
-            transform: translateY(20px); /* Начальное положение ниже */
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .product.show {
-            opacity: 1; /* Показываем продукты */
-            transform: translateY(0); /* Возвращаем на место */
+            opacity: 1; 
+            transform: translateY(0); 
         }
 
         .product strong {
@@ -125,7 +125,7 @@
             background-color: #2980b9;
         }
 
-        /* Стили для контейнера кнопок */
+
         .category-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -134,7 +134,7 @@
             margin-bottom: 30px;
         }
 
-        /* Стили для кнопок категорий */
+
         .btn-category {
             background-color: #3498db;
             color: white;
@@ -152,7 +152,7 @@
             transform: scale(1.05);
         }
 
-        /* Адаптивность для маленьких экранов */
+
         @media (max-width: 768px) {
             .btn-category {
                 font-size: 14px;
@@ -160,7 +160,7 @@
             }
         }
 
-        /* Кнопки "Показать/Скрыть все продукты" */
+
         .show-products-btn,
         .hide-products-btn {
             display: inline-block;
@@ -189,7 +189,7 @@
             background-color: #c0392b;
         }
 
-        /* Скрываем категории и продукты по умолчанию */
+
         .category {
             display: none;
         }
@@ -198,19 +198,19 @@
             display: block;
         }
 
-        /* Стиль для заголовков категорий */
+
         .category h3 {
-            font-family: 'Georgia', serif; /* Элегантный шрифт */
+            font-family: 'Georgia', serif;
             font-size: 24px;
-            color: #2980b9; /* Цвет текста */
+            color: #2980b9;
             margin-bottom: 20px;
-            text-transform: capitalize; /* Первая буква заглавная */
-            text-align: center; /* Выравнивание по центру */
-            border-bottom: 2px solid #2980b9; /* Линия под заголовком */
+            text-transform: capitalize;
+            text-align: center;
+            border-bottom: 2px solid #2980b9;
             padding-bottom: 10px;
         }
 
-        /* Добавляем стили для аналитики */
+
         .analytics-section {
             margin-top: 40px;
         }
@@ -254,40 +254,40 @@
             background-color: #f1f1f1;
         }
 
-        /* Стили для кнопки "Удалить" */
+
         .btn-delete-product {
-            position: absolute; /* Позиционируем кнопку абсолютно внутри родительского элемента */
-            top: 50px; /* Отступ сверху */
-            right: 10px; /* Отступ справа */
-            background-color: #e74c3c; /* Красный цвет фона */
-            color: white; /* Белый текст */
-            border: none; /* Без обводки */
-            padding: 5px 10px; /* Внутренние отступы */
-            font-size: 14px; /* Размер шрифта */
-            border-radius: 5px; /* Закругленные углы */
-            cursor: pointer; /* Указатель мыши в виде руки */
-            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .btn-delete-product:hover {
-            background-color: #c0392b; /* Темно-красный цвет при наведении */
+            background-color: #c0392b;
         }
 
-        /* Стили для кнопки "Изменить" */
+
         .btn-update-quantity {
-            background-color: #f39c12; /* Оранжевый цвет фона */
-            color: white; /* Белый текст */
-            border: none; /* Без обводки */
-            padding: 5px 10px; /* Внутренние отступы */
-            font-size: 14px; /* Размер шрифта */
-            border-radius: 5px; /* Закругленные углы */
-            cursor: pointer; /* Указатель мыши в виде руки */
-            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
-            margin-left: 10px; /* Отступ слева */
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
         }
 
         .btn-update-quantity:hover {
-            background-color: #d35400; /* Темно-оранжевый цвет при наведении */
+            background-color: #d35400;
         }
     </style>
 </head>
@@ -295,7 +295,7 @@
     <div class="container">
         <h1>Холодильник открыт!</h1>
 
-        <!-- Категории -->
+
         <h2>Категории</h2>
         <div class="category-buttons">
             {% for category, products_list in categories.items() %}
@@ -369,7 +369,7 @@
             {% endfor %}
         </div>
 
-        <!-- Аналитика потребления -->
+        
         <div class="analytics-section">
             <h2>Аналитика потребления</h2>
             <form class="date-range-form" id="dateRangeForm">
@@ -389,21 +389,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Данные будут загружаться здесь через JavaScript -->
+
                 </tbody>
             </table>
         </div>
 
-        <!-- Кнопка закрытия холодильника -->
+
         <form action="{{ url_for('close_fridge') }}" method="get">
             <button type="submit" class="btn btn-primary">Закрыть холодильник</button>
         </form>
     </div>
 
-    <!-- JavaScript для анимации и обработки событий -->
+
     <script>
 
-                // Обработчик для поиска по названию продукта
+
         document.getElementById("searchInput").addEventListener("input", function () {
             const searchValue = this.value.toLowerCase();
             const products = document.querySelectorAll(".product");
@@ -423,41 +423,41 @@
             const categories = document.querySelectorAll(".category");
             const products = document.querySelectorAll(".product");
 
-            // Функция для показа продуктов и категорий
+
             function showProducts() {
                 categories.forEach(category => {
-                    category.classList.add("show"); // Показываем категории
+                    category.classList.add("show");
                 });
 
                 products.forEach((product, index) => {
                     setTimeout(() => {
-                        product.classList.add("show"); // Показываем продукты с задержкой
+                        product.classList.add("show");
                     }, index * 100);
                 });
 
-                showProductsBtn.style.display = "none"; // Скрываем кнопку "Показать"
-                hideProductsBtn.style.display = "inline-block"; // Показываем кнопку "Скрыть"
+                showProductsBtn.style.display = "none";
+                hideProductsBtn.style.display = "inline-block";
             }
 
-            // Функция для скрытия продуктов и категорий
+
             function hideProducts() {
                 categories.forEach(category => {
-                    category.classList.remove("show"); // Скрываем категории
+                    category.classList.remove("show");
                 });
 
                 products.forEach(product => {
-                    product.classList.remove("show"); // Скрываем продукты
+                    product.classList.remove("show");
                 });
 
-                hideProductsBtn.style.display = "none"; // Скрываем кнопку "Скрыть"
-                showProductsBtn.style.display = "inline-block"; // Показываем кнопку "Показать"
+                hideProductsBtn.style.display = "none";
+                showProductsBtn.style.display = "inline-block";
             }
 
             // Добавляем обработчики событий
             showProductsBtn.addEventListener("click", showProducts);
             hideProductsBtn.addEventListener("click", hideProducts);
 
-            // Обработчик для кнопок "Изменить"
+
             document.querySelectorAll(".btn-update-quantity").forEach(button => {
                 button.addEventListener("click", function () {
                     const productId = this.getAttribute("data-product-id");
@@ -482,7 +482,7 @@
                 });
             });
 
-            // Обработчик для кнопок "Удалить"
+
             document.querySelectorAll(".btn-delete-product").forEach(button => {
                 button.addEventListener("click", function () {
                     const productId = this.getAttribute("data-product-id");
@@ -504,7 +504,7 @@
                 });
             });
 
-            // Обработчик для формы аналитики
+
             const dateRangeForm = document.getElementById("dateRangeForm");
             const analyticsTableBody = document.querySelector("#analyticsTable tbody");
 
@@ -514,14 +514,14 @@
                 const startDate = document.getElementById("startDate").value;
                 const endDate = document.getElementById("endDate").value;
 
-                // Отправляем запрос на сервер для получения данных
+
                 fetch(`/get_consumption_report?start_date=${startDate}&end_date=${endDate}`)
                     .then(response => response.json())
                     .then(data => {
-                        // Очищаем таблицу
+
                         analyticsTableBody.innerHTML = "";
 
-                        // Заполняем таблицу данными
+
                         data.forEach(item => {
                             const row = document.createElement("tr");
                             row.innerHTML = `
