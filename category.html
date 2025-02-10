@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категория: {{ category }}</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f4f4f4;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        li strong {
+            color: #3498db;
+            font-size: 18px;
+        }
+
+        li span {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .days-left {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        /* Цветовая индикация */
+        .days-left.red {
+            background-color: #e74c3c; /* Красный */
+        }
+
+        .days-left.orange {
+            background-color: #f39c12; /* Оранжевый */
+        }
+
+        .days-left.green {
+            background-color: #2ecc71; /* Зеленый */
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Категория: {{ category }}</h1>
+
+        <ul>
+        {% for product in products %}
+            <li>
+                <strong>{{ product.product_name }}</strong>
+                <span>Тип: {{ product.product_type }}</span>
+                <span>Дата производства: {{ product.production_date }}</span>
+                <span>Годен до: {{ product.expiration_date }}</span>
+                <!-- Преобразование Decimal в строку -->
+                <span>Количество: {{ "%.0f"|format(product.quantity) }} шт</span>
+                <span>Вес: {{ product.weight }} {{ product.measurement_unit }}</span>
+                <span>Аллергены: {{ product.allergens if product.allergens else "Нет" }}</span>
+                <!-- Отладка -->
+                {% if product.days_left != None %}
+                    {% if product.days_left < 0 %}
+                        <span class="days-left red">Срок годности истек</span>
+                    {% elif product.days_left < 3 %}
+                        <span class="days-left red">{{ product.days_left }} дней</span>
+                    {% elif product.days_left >= 3 and product.days_left <= 7 %}
+                        <span class="days-left orange">{{ product.days_left }} дней</span>
+                    {% else %}
+                        <span class="days-left green">{{ product.days_left }} дней</span>
+                    {% endif %}
+                {% else %}
+                    <span class="days-left red">Неизвестно</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+
+        <form action="{{ url_for('open_fridge') }}" method="get">
+            <button type="submit">Назад к холодильнику</button>
+        </form>
+    </div>
+</body>
+</html>

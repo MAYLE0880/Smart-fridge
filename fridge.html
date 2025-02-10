@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Холодильник открыт</title>
+    <!-- Подключение Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .product {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: transform 0.2s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0; /* Продукты изначально скрыты */
+            transform: translateY(20px); /* Начальное положение ниже */
+        }
+
+        .product.show {
+            opacity: 1; /* Показываем продукты */
+            transform: translateY(0); /* Возвращаем на место */
+        }
+
+        .product strong {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .product ul {
+            margin-left: 20px;
+        }
+
+        .product li {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .days-left {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .days-left.red {
+            background-color: #e74c3c;
+        }
+
+        .days-left.orange {
+            background-color: #f39c12;
+        }
+
+        .days-left.green {
+            background-color: #2ecc71;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            background-color: #3498db;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        /* Стили для контейнера кнопок */
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        /* Стили для кнопок категорий */
+        .btn-category {
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-category:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* Адаптивность для маленьких экранов */
+        @media (max-width: 768px) {
+            .btn-category {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+
+        /* Кнопки "Показать/Скрыть все продукты" */
+        .show-products-btn,
+        .hide-products-btn {
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 10px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .show-products-btn:hover,
+        .hide-products-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .hide-products-btn {
+            background-color: #e74c3c;
+        }
+
+        .hide-products-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Скрываем категории и продукты по умолчанию */
+        .category {
+            display: none;
+        }
+
+        .category.show {
+            display: block;
+        }
+
+        /* Стиль для заголовков категорий */
+        .category h3 {
+            font-family: 'Georgia', serif; /* Элегантный шрифт */
+            font-size: 24px;
+            color: #2980b9; /* Цвет текста */
+            margin-bottom: 20px;
+            text-transform: capitalize; /* Первая буква заглавная */
+            text-align: center; /* Выравнивание по центру */
+            border-bottom: 2px solid #2980b9; /* Линия под заголовком */
+            padding-bottom: 10px;
+        }
+
+        /* Добавляем стили для аналитики */
+        .analytics-section {
+            margin-top: 40px;
+        }
+
+        .date-range-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .date-range-form input[type="date"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .analytics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .analytics-table th,
+        .analytics-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .analytics-table th {
+            background-color: #f2f2f2;
+        }
+
+        .analytics-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .analytics-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Стили для кнопки "Удалить" */
+        .btn-delete-product {
+            position: absolute; /* Позиционируем кнопку абсолютно внутри родительского элемента */
+            top: 50px; /* Отступ сверху */
+            right: 10px; /* Отступ справа */
+            background-color: #e74c3c; /* Красный цвет фона */
+            color: white; /* Белый текст */
+            border: none; /* Без обводки */
+            padding: 5px 10px; /* Внутренние отступы */
+            font-size: 14px; /* Размер шрифта */
+            border-radius: 5px; /* Закругленные углы */
+            cursor: pointer; /* Указатель мыши в виде руки */
+            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+        }
+
+        .btn-delete-product:hover {
+            background-color: #c0392b; /* Темно-красный цвет при наведении */
+        }
+
+        /* Стили для кнопки "Изменить" */
+        .btn-update-quantity {
+            background-color: #f39c12; /* Оранжевый цвет фона */
+            color: white; /* Белый текст */
+            border: none; /* Без обводки */
+            padding: 5px 10px; /* Внутренние отступы */
+            font-size: 14px; /* Размер шрифта */
+            border-radius: 5px; /* Закругленные углы */
+            cursor: pointer; /* Указатель мыши в виде руки */
+            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+            margin-left: 10px; /* Отступ слева */
+        }
+
+        .btn-update-quantity:hover {
+            background-color: #d35400; /* Темно-оранжевый цвет при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Холодильник открыт!</h1>
+
+        <!-- Категории -->
+        <h2>Категории</h2>
+        <div class="category-buttons">
+            {% for category, products_list in categories.items() %}
+            <a href="{{ url_for('show_category', category_name=category) }}" class="btn btn-category">
+                {{ category|title }} ({{ products_list|length }})
+            </a>
+            {% endfor %}
+        </div>
+
+
+        <!-- Все продукты -->
+        <h2>Все продукты</h2>
+        <!-- Поиск -->
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="searchInput" placeholder="Поиск по названию продукта..." class="form-control">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <button class="show-products-btn" id="showProductsBtn">Показать все продукты</button>
+            <button class="hide-products-btn" id="hideProductsBtn" style="display: none;">Скрыть все продукты</button>
+        </div>
+        <div id="allProducts">
+            {% for category, products_list in categories.items() %}
+            <div class="category">
+                <h3>{{ category }}</h3>
+                <ul>
+                    {% for product in products_list %}
+                    <li class="product" data-product-id="{{ product.id }}">
+                        <strong>{{ product.product_name }}</strong>
+                        <div class="days-left
+                            {% if product.days_left != None %}
+                                {% if product.days_left < 0 %}
+                                    red
+                                {% elif product.days_left < 3 %}
+                                    red
+                                {% elif product.days_left >= 3 and product.days_left <= 7 %}
+                                    orange
+                                {% else %}
+                                    green
+                                {% endif %}
+                            {% else %}
+                                red
+                            {% endif %}
+                        ">
+                            {% if product.days_left != None %}
+                                {% if product.days_left < 0 %}
+                                    Срок годности истек
+                                {% else %}
+                                    {{ product.days_left }} дней
+                                {% endif %}
+                            {% else %}
+                                Неизвестно
+                            {% endif %}
+                        </div>
+                        <ul>
+                            <li>Тип: {{ product.product_type }}</li>
+                            <li>Производство: {{ product.production_date }}</li>
+                            <li>Годен до: {{ product.expiration_date }}</li>
+                            <li>
+                                Количество:
+                                <span class="quantity">{{ product.quantity }}</span> шт
+                                <button class="btn-update-quantity" data-product-id="{{ product.id }}">Изменить</button>
+                            </li>
+                            <li>Общая масса: {{ product.measurement_unit }}</li>
+                            <li>Аллергены: {{ product.allergens if product.allergens else "Нет" }}</li>
+                        </ul>
+                        <button class="btn-delete-product" data-product-id="{{ product.id }}">Удалить</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Аналитика потребления -->
+        <div class="analytics-section">
+            <h2>Аналитика потребления</h2>
+            <form class="date-range-form" id="dateRangeForm">
+                <label for="startDate">Начальная дата:</label>
+                <input type="date" id="startDate" name="startDate" required>
+                <label for="endDate">Конечная дата:</label>
+                <input type="date" id="endDate" name="endDate" required>
+                <button type="submit" class="btn btn-primary">Показать отчет</button>
+            </form>
+            <table class="analytics-table" id="analyticsTable">
+                <thead>
+                    <tr>
+                        <th>Продукт</th>
+                        <th>Категория</th>
+                        <th>Количество</th>
+                        <th>Дата потребления</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Данные будут загружаться здесь через JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Кнопка закрытия холодильника -->
+        <form action="{{ url_for('close_fridge') }}" method="get">
+            <button type="submit" class="btn btn-primary">Закрыть холодильник</button>
+        </form>
+    </div>
+
+    <!-- JavaScript для анимации и обработки событий -->
+    <script>
+
+                // Обработчик для поиска по названию продукта
+        document.getElementById("searchInput").addEventListener("input", function () {
+            const searchValue = this.value.toLowerCase();
+            const products = document.querySelectorAll(".product");
+
+            products.forEach(product => {
+                const productName = product.querySelector("strong").textContent.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const showProductsBtn = document.getElementById("showProductsBtn");
+            const hideProductsBtn = document.getElementById("hideProductsBtn");
+            const categories = document.querySelectorAll(".category");
+            const products = document.querySelectorAll(".product");
+
+            // Функция для показа продуктов и категорий
+            function showProducts() {
+                categories.forEach(category => {
+                    category.classList.add("show"); // Показываем категории
+                });
+
+                products.forEach((product, index) => {
+                    setTimeout(() => {
+                        product.classList.add("show"); // Показываем продукты с задержкой
+                    }, index * 100);
+                });
+
+                showProductsBtn.style.display = "none"; // Скрываем кнопку "Показать"
+                hideProductsBtn.style.display = "inline-block"; // Показываем кнопку "Скрыть"
+            }
+
+            // Функция для скрытия продуктов и категорий
+            function hideProducts() {
+                categories.forEach(category => {
+                    category.classList.remove("show"); // Скрываем категории
+                });
+
+                products.forEach(product => {
+                    product.classList.remove("show"); // Скрываем продукты
+                });
+
+                hideProductsBtn.style.display = "none"; // Скрываем кнопку "Скрыть"
+                showProductsBtn.style.display = "inline-block"; // Показываем кнопку "Показать"
+            }
+
+            // Добавляем обработчики событий
+            showProductsBtn.addEventListener("click", showProducts);
+            hideProductsBtn.addEventListener("click", hideProducts);
+
+            // Обработчик для кнопок "Изменить"
+            document.querySelectorAll(".btn-update-quantity").forEach(button => {
+                button.addEventListener("click", function () {
+                    const productId = this.getAttribute("data-product-id");
+                    const currentQuantity = parseInt(this.parentElement.querySelector(".quantity").textContent);
+                    const newQuantity = prompt("Введите новое количество:", currentQuantity);
+
+                    if (newQuantity !== null && !isNaN(newQuantity)) {
+                        fetch(`/update_product/${productId}`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                            body: `quantity=${newQuantity}`
+                        })
+                        .then(response => response.text())
+                        .then(message => {
+                            alert(message);
+                            this.parentElement.querySelector(".quantity").textContent = newQuantity;
+                        })
+                        .catch(error => console.error("Ошибка:", error));
+                    }
+                });
+            });
+
+            // Обработчик для кнопок "Удалить"
+            document.querySelectorAll(".btn-delete-product").forEach(button => {
+                button.addEventListener("click", function () {
+                    const productId = this.getAttribute("data-product-id");
+
+                    if (confirm("Вы уверены, что хотите удалить этот продукт?")) {
+                        fetch(`/delete_product/${productId}`, {
+                            method: "POST"
+                        })
+                        .then(response => response.text())
+                        .then(message => {
+                            alert(message);
+                            const productElement = document.querySelector(`.product[data-product-id="${productId}"]`);
+                            if (productElement) {
+                                productElement.remove();
+                            }
+                        })
+                        .catch(error => console.error("Ошибка:", error));
+                    }
+                });
+            });
+
+            // Обработчик для формы аналитики
+            const dateRangeForm = document.getElementById("dateRangeForm");
+            const analyticsTableBody = document.querySelector("#analyticsTable tbody");
+
+            dateRangeForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const startDate = document.getElementById("startDate").value;
+                const endDate = document.getElementById("endDate").value;
+
+                // Отправляем запрос на сервер для получения данных
+                fetch(`/get_consumption_report?start_date=${startDate}&end_date=${endDate}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Очищаем таблицу
+                        analyticsTableBody.innerHTML = "";
+
+                        // Заполняем таблицу данными
+                        data.forEach(item => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                                <td>${item.product_name}</td>
+                                <td>${item.category}</td>
+                                <td>${item.quantity}</td>
+                                <td>${item.consumption_date}</td>
+                            `;
+                            analyticsTableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error("Ошибка:", error));
+            });
+        });
+    </script>
+</body>
+</html>
