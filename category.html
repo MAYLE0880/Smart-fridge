@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Категория: {{ category }}</title>
     <style>
-        /* Общие стили */
+
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
@@ -66,17 +66,17 @@
             text-align: center;
         }
 
-        /* Цветовая индикация */
+
         .days-left.red {
-            background-color: #e74c3c; /* Красный */
+            background-color: #e74c3c;
         }
 
         .days-left.orange {
-            background-color: #f39c12; /* Оранжевый */
+            background-color: #f39c12;
         }
 
         .days-left.green {
-            background-color: #2ecc71; /* Зеленый */
+            background-color: #2ecc71;
         }
 
         hr {
@@ -114,11 +114,11 @@
                 <span>Тип: {{ product.product_type }}</span>
                 <span>Дата производства: {{ product.production_date }}</span>
                 <span>Годен до: {{ product.expiration_date }}</span>
-                <!-- Преобразование Decimal в строку -->
+
                 <span>Количество: {{ "%.0f"|format(product.quantity) }} шт</span>
                 <span>Вес: {{ product.weight }} {{ product.measurement_unit }}</span>
                 <span>Аллергены: {{ product.allergens if product.allergens else "Нет" }}</span>
-                <!-- Отладка -->
+
                 {% if product.days_left != None %}
                     {% if product.days_left < 0 %}
                         <span class="days-left red">Срок годности истек</span>
