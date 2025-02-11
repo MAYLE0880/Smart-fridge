@@ -48,15 +48,15 @@ https://vk.com/video548815723_456239959?list=ln-SIdtyDnrYHqjXBH6CO
 
 Навигация:
 
-APP.py - Бэкэнд сайта холодильника
+APP.py - Бэкэнд сайта холодильника;
 
-QRgen.py - Бэкэнд генератора QR-кодов
+QRgen.py - Генератор QR-кодов;
 
-Scan-Qr-with-RP.py - код для работы сканера
+Scan-Qr-with-RP.py - код для работы сканера;
 
-category.html, fridge.html, index.html - разметка сайта холодильника
+category.html, fridge.html, index.html - разметка сайта холодильника;
 
-python and libraries - версии языков программмирования и библиотек python
+python and libraries - версии языков программмирования и библиотек python.
 
 
 
