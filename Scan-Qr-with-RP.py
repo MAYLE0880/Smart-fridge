@@ -121,7 +121,7 @@ def insert_product(product_info):
         cursor.execute(sql, values)
         conn.commit()
         print(f"✅ Продукт '{product_name}' добавлен в базу.")
-        playsound(r'C:\Users\exam\Downloads\puk.mp3')  # Воспроизведение звука
+        playsound(r'C:\Users\exam\Downloads\puk.mp3')
         time.sleep(2.5)
     except pymysql.MySQLError as err:
         print("Ошибка MySQL:", err)
