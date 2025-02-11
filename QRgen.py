@@ -6,7 +6,7 @@ import io
 from datetime import datetime, timedelta
 app = Flask(__name__)
 
-# HTML-шаблон с подключением Bootstrap и базовой стилизацией
+
 html_page = """
 <!DOCTYPE html>
 <html lang="ru">
@@ -156,13 +156,13 @@ def index():
         kbzhu = request.form.get("kbzhu", "")
         allergens = request.form.get("allergens", "")
 
-        # -- Обрабатываем дату производства
+
         try:
             production_dt = datetime.strptime(production_time, "%Y-%m-%d %H:%M")
         except ValueError:
             production_dt = datetime.now()
 
-        # -- Обрабатываем срок годности
+
         expiration_date_str = ""
         if expiration_date_input.lower().startswith("через"):
             parts = expiration_date_input.lower().replace("через", "").split()
@@ -180,10 +180,10 @@ def index():
         else:
             expiration_date_str = expiration_date_input
 
-        # -- Определяем единицу измерения
+
         measurement_type = "вес" if "г" in quantity_mass.lower() or "кг" in quantity_mass.lower() else "объем"
 
-        # -- Формируем JSON-данные, как в 1.py
+
         data_json = {
             "name": product_name,
             "type": product_type,
@@ -196,10 +196,10 @@ def index():
             "allergens": allergens
         }
 
-        # -- Сохраняем JSON в конфиг
+
         app.config['QR_DATA_JSON'] = json.dumps(data_json, ensure_ascii=False)
 
-        # -- Генерируем QR-код с JSON-данными
+
         app.config['QR_DATA'] = data_json
         qr_generated = True
 
@@ -211,7 +211,7 @@ def qr_code():
     data_json = app.config.get('QR_DATA', {})
     qr_data = json.dumps(data_json, ensure_ascii=False)
 
-    # -- Генерируем QR-код
+
     qr = qrcode.QRCode(
         version=1, error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=5, border=1
